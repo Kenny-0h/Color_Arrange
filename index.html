@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nome do Jogo</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- ========================================
+     TELA DE MENU
+========================================= -->
+<main id="menu-screen">
+
+    <header>
+        <h1>Nome do Jogo</h1>
+    </header>
+
+    <section id="menu">
+
+        <h2>Escolha o tamanho do jogo</h2>
+
+        <section id="size-selection">
+
+            <h3>Tamanho</h3>
+
+            <button type="button" id="small-game">
+                Pequeno
+            </button>
+
+            <button type="button" id="medium-game">
+                Médio
+            </button>
+
+            <button type="button" id="large-game">
+                Grande
+            </button>
+
+        </section>
+
+        <button type="button" id="rules-button">
+            Regras
+        </button>
+
+    </section>
+
+</main>
+
+
+<!-- ========================================
+     TELA DE REGRAS
+========================================= -->
+<main id="rules-screen">
+
+    <header>
+        <h1>Regras do Jogo</h1>
+    </header>
+
+    <section id="game-objective">
+
+        <h2>Objetivo</h2>
+
+        <p>
+            Descrição do objetivo do jogo.
+        </p>
+
+    </section>
+
+    <section id="game-rules">
+
+        <h2>Regras</h2>
+
+        <ul>
+            <li>Regra do jogo.</li>
+            <li>Regra do jogo.</li>
+            <li>Regra do jogo.</li>
+        </ul>
+
+    </section>
+
+    <button type="button" id="back-to-menu-from-rules">
+        Voltar
+    </button>
+
+</main>
+
+
+<!-- ========================================
+     TELA DO JOGO
+========================================= -->
+<main id="game-screen">
+
+    <header>
+
+        <h1>Nome do Jogo</h1>
+
+        <section id="game-status">
+
+            <div>
+                <span>Pontuação</span>
+                <span id="score">0</span>
+            </div>
+
+            <div>
+                <span>Tempo</span>
+                <span id="timer">00:00</span>
+            </div>
+
+            <div>
+                <span>Movimentos</span>
+                <span id="moves">0</span>
+            </div>
+
+        </section>
+
+    </header>
+
+
+    <section id="game-area">
+
+        <div id="game-board">
+            <!--
+                O board será preenchido/controlado
+                pelo JavaScript.
+            -->
+        </div>
+
+    </section>
+
+
+    <section id="game-message" aria-live="polite">
+
+        <p id="message">
+            Prepare-se para começar!
+        </p>
+
+    </section>
+
+
+    <section id="game-controls">
+
+        <button type="button" id="restart-button">
+            Reiniciar
+        </button>
+
+        <button type="button" id="back-to-menu-from-game">
+            Voltar ao menu
+        </button>
+
+    </section>
+
+</main>
+
+
+<script src="js/script.js"></script>
+
+</body>
+
+</html>
+```

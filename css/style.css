@@ -1,0 +1,400 @@
+    /* =========================================================
+       VARIÁVEIS BASE
+       ---------------------------------------------------------
+       Estas variáveis serão utilizadas posteriormente para
+       criação dos temas visuais do jogo.
+       ========================================================= */
+
+:root {
+    --font-family: system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+
+    --text-color: #222;
+    --background-color: #f5f5f5;
+    --surface-color: #ffffff;
+    --border-color: #cccccc;
+
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+
+    --border-radius: 0.5rem;
+
+    --content-width: 70rem;
+}
+
+
+/* =========================================================
+   RESET / BASE
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+body {
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ELEMENTOS GERAIS
+   ========================================================= */
+
+button {
+    font: inherit;
+    cursor: pointer;
+}
+
+button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.2;
+}
+
+ul {
+    padding-left: 1.5rem;
+}
+
+
+/* =========================================================
+   TELAS
+   ---------------------------------------------------------
+   Cada <main> representa uma tela diferente da aplicação.
+   O JavaScript poderá controlar posteriormente qual tela
+   está visível.
+   ========================================================= */
+
+#menu-screen,
+#rules-screen,
+#game-screen {
+    width: min(100% - 2rem, var(--content-width));
+    min-height: 100vh;
+    margin-inline: auto;
+    padding-block: var(--spacing-xl);
+}
+
+
+/* =========================================================
+   MENU
+   ========================================================= */
+
+#menu-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    text-align: center;
+}
+
+#menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+    width: 100%;
+    max-width: 30rem;
+}
+
+#size-selection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    width: 100%;
+    max-width: 20rem;
+}
+
+#size-selection h3 {
+    margin-bottom: var(--spacing-xs);
+}
+
+#size-selection button,
+#rules-button {
+    width: 100%;
+    min-height: 3rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    background-color: var(--surface-color);
+    color: var(--text-color);
+}
+
+
+/* =========================================================
+   REGRAS
+   ========================================================= */
+
+#rules-screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+#rules-screen header {
+    text-align: center;
+}
+
+#game-objective,
+#game-rules {
+    width: 100%;
+    padding: var(--spacing-lg);
+
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    background-color: var(--surface-color);
+}
+
+#game-objective h2,
+#game-rules h2 {
+    margin-bottom: var(--spacing-md);
+}
+
+#game-rules ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+#back-to-menu-from-rules {
+    align-self: center;
+
+    min-height: 2.75rem;
+    padding: var(--spacing-sm) var(--spacing-lg);
+
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    background-color: var(--surface-color);
+    color: var(--text-color);
+}
+
+
+/* =========================================================
+   TELA DO JOGO
+   ========================================================= */
+
+#game-screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+#game-screen > header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+
+    padding-bottom: var(--spacing-md);
+
+    border-bottom: 1px solid var(--border-color);
+}
+
+
+/* =========================================================
+   STATUS DA PARTIDA
+   ========================================================= */
+
+#game-status {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+
+#game-status > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 6rem;
+
+    padding: var(--spacing-sm);
+
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    background-color: var(--surface-color);
+}
+
+#game-status span:first-child {
+    font-size: 0.85rem;
+}
+
+#game-status span:last-child {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   ÁREA DO JOGO
+   ========================================================= */
+
+#game-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   BOARD
+   ---------------------------------------------------------
+   Por enquanto o board possui apenas uma área visual.
+   O tamanho e a estrutura interna serão definidos
+   posteriormente pelo JavaScript/CSS.
+   ========================================================= */
+
+#game-board {
+    width: min(80vw, 40rem);
+    aspect-ratio: 1 / 1;
+
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    background-color: var(--surface-color);
+}
+
+
+/* =========================================================
+   MENSAGEM DO JOGO
+   ========================================================= */
+
+#game-message {
+    width: 100%;
+    text-align: center;
+
+    padding: var(--spacing-md);
+
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    background-color: var(--surface-color);
+}
+
+
+/* =========================================================
+   CONTROLES
+   ========================================================= */
+
+#game-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+
+#game-controls button {
+    min-height: 2.75rem;
+    padding: var(--spacing-sm) var(--spacing-lg);
+
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    background-color: var(--surface-color);
+    color: var(--text-color);
+}
+
+
+/* =========================================================
+   INTERAÇÃO BÁSICA
+   ---------------------------------------------------------
+   Apenas estados funcionais. A identidade visual será
+   definida posteriormente.
+   ========================================================= */
+
+button:hover {
+    filter: brightness(0.95);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+   ---------------------------------------------------------
+   A estrutura já nasce adaptável. Estes ajustes apenas
+   refinam a disposição em telas maiores.
+   ========================================================= */
+
+@media (min-width: 48rem) {
+
+    #rules-screen {
+        padding-inline: var(--spacing-xl);
+    }
+
+    #game-screen > header {
+        padding-inline: var(--spacing-md);
+    }
+
+    #game-board {
+        width: min(70vw, 45rem);
+    }
+}
+
+
+/* =========================================================
+   TELAS PEQUENAS
+   ========================================================= */
+
+@media (max-width: 30rem) {
+
+    #menu-screen,
+    #rules-screen,
+    #game-screen {
+        width: min(100% - 1rem, var(--content-width));
+        padding-block: var(--spacing-md);
+    }
+
+    #game-screen > header {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    #game-status {
+        width: 100%;
+    }
+
+    #game-status > div {
+        flex: 1;
+        min-width: 0;
+    }
+
+    #game-board {
+        width: min(90vw, 30rem);
+    }
+
+    #game-controls {
+        flex-direction: column;
+    }
+
+    #game-controls button {
+        width: 100%;
+    }
+}
