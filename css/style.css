@@ -58,18 +58,48 @@
 
 
 /* =========================================================
-   2. EXEMPLO DE TEMA FUTURO
+   2. TEMAS
    ========================================================= */
 
-/*
-[data-theme="dark"] {
-    --color-background: ...;
-    --color-surface: ...;
-    --color-text: ...;
-    --color-primary: ...;
-    --tile-background: ...;
+body.theme-default {
+    --theme-background: #f3f4f6;
+    --theme-surface: #ffffff;
+    --theme-text: #1f2937;
+    --theme-primary: #2563eb;
 }
-*/
+
+body.theme-1 {
+    --theme-background: ...;
+    --theme-surface: ...;
+    --theme-text: ...;
+    --theme-primary: ...;
+}
+
+/* repetir para outros temas */
+
+
+/* ESTADOS */
+
+body.game-state-normal {
+    --state-background: var(--theme-background);
+    --state-surface: var(--theme-surface);
+    --state-text: var(--theme-text);
+    --state-primary: var(--theme-primary);
+}
+
+body.game-state-win {
+    --state-background: ...;
+    --state-surface: ...;
+    --state-text: ...;
+    --state-primary: ...;
+}
+
+body.game-state-give-up {
+    --state-background: ...;
+    --state-surface: ...;
+    --state-text: ...;
+    --state-primary: ...;
+}
 
 
 /* =========================================================
@@ -626,4 +656,29 @@ ul {
         gap: 0.2rem;
         padding: 0.3rem;
     }
+}
+
+
+/* =========================================================
+   19. ESTADOS
+   ========================================================= */
+body.game-state-normal {
+    --state-background: var(--theme-background);
+    --state-surface: var(--theme-surface);
+    --state-text: var(--theme-text);
+    --state-primary: var(--theme-primary);
+}
+
+body.game-state-win {
+    --state-background: var(--state-background);
+    --state-surface: var(--state-surface);
+    --state-text: var(--state-text);
+    --state-primary: var(--state-primary);
+}
+
+body.game-state-give-up {
+    --state-background: var(--state-background);
+    --state-surface: var(--state-surface);
+    --state-text: var(--state-text);
+    --state-primary: var(--state-primary);
 }

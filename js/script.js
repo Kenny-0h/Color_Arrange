@@ -93,6 +93,7 @@ function startGame() {
 
     showScreen("game");
 
+    setGameState("normal");
     startTimer();
 }
 
@@ -519,6 +520,8 @@ function finishGame() {
         `${gameState.moves} movimentos e ` +
         `${formatTime(gameState.elapsedTime)}. ` +
         `Pontuação final: ${gameState.score}.`;
+
+    setGameState("win");
 }
 
 
@@ -655,6 +658,37 @@ backToMenuFromGame.addEventListener(
     "click",
     returnToMenu
 );
+
+/* =========================================================
+   APLICAÇÃO DOS TEMAS
+   ========================================================= */
+function applyTheme() {
+    const selectedTheme = gameThemeSelect.value;
+
+    document.body.classList.remove(
+        "theme-default",
+        "theme-1",
+        "theme-2",
+        "theme-3"
+    );
+
+    document.body.classList.add(`theme-${selectedTheme}`);
+}
+
+
+/* =========================================================
+   MUDAR ESTADOS DO JOGO
+   ========================================================= */
+
+function setGameState(state) {
+    document.body.classList.remove(
+        "game-state-normal",
+        "game-state-win",
+        "game-state-give-up"
+    );
+
+    document.body.classList.add(`game-state-${state}`);
+}
 
 
 /* =========================================================
