@@ -4,46 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Nome do Jogo</title>
-
+    <title>Color Arrange</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
 <!-- ========================================
-     TELA DE MENU
+     TELA 1 — MENU
 ========================================= -->
-<main id="menu-screen">
+<main id="menu-screen" class="screen active">
 
-    <header>
-        <h1>Nome do Jogo</h1>
+    <header class="screen-header">
+        <p class="eyebrow">Jogo de lógica</p>
+        <h1>Color Arrange</h1>
+        <p class="screen-subtitle">
+            Organize todas as peças utilizando o menor
+            número de movimentos e o menor tempo possível.
+        </p>
     </header>
 
-    <section id="menu">
+    <section class="panel menu-panel" aria-labelledby="menu-title">
 
-        <h2>Escolha o tamanho do jogo</h2>
+        <h2 id="menu-title">Nova partida</h2>
 
-        <section id="size-selection">
+        <div class="field-group">
+            <label for="board-size">Tamanho do tabuleiro</label>
 
-            <h3>Tamanho</h3>
+            <select id="board-size" name="board-size">
+                <option value="3">3 × 3</option>
+                <option value="4">4 × 4</option>
+                <option value="5">5 × 5</option>
+                <option value="6">6 × 6</option>
+                <option value="7">7 × 7</option>
+                <option value="8">8 × 8</option>
+                <option value="9">9 × 9</option>
+                <option value="10">10 × 10</option>
+            </select>
+        </div>
 
-            <button type="button" id="small-game">
-                Pequeno
-            </button>
+        <button type="button" id="start-button" class="button button-primary">
+            Iniciar partida
+        </button>
 
-            <button type="button" id="medium-game">
-                Médio
-            </button>
-
-            <button type="button" id="large-game">
-                Grande
-            </button>
-
-        </section>
-
-        <button type="button" id="rules-button">
+        <button type="button" id="rules-button" class="button button-secondary">
             Regras
         </button>
 
@@ -53,102 +57,81 @@
 
 
 <!-- ========================================
-     TELA DE REGRAS
+     TELA 2 — REGRAS
 ========================================= -->
-<main id="rules-screen">
+<main id="rules-screen" class="screen">
 
-    <header>
-        <h1>Regras do Jogo</h1>
+    <header class="screen-header">
+        <p class="eyebrow">Como jogar</p>
+        <h1>Regras</h1>
     </header>
 
-    <section id="game-objective">
+    <section class="panel rules-panel">
 
-        <h2>Objetivo</h2>
-
-        <p>
-            Descrição do objetivo do jogo.
-        </p>
-
-    </section>
-
-    <section id="game-rules">
-
-        <h2>Regras</h2>
-
-        <ul>
-            <li>Regra do jogo.</li>
-            <li>Regra do jogo.</li>
-            <li>Regra do jogo.</li>
-        </ul>
-
-    </section>
-
-    <button type="button" id="back-to-menu-from-rules">
-        Voltar
-    </button>
-
-</main>
-
-
-<!-- ========================================
-     TELA DO JOGO
-========================================= -->
-<main id="game-screen">
-
-    <header>
-
-        <h1>Nome do Jogo</h1>
-
-        <section id="game-status">
-
-            <div>
-                <span>Pontuação</span>
-                <span id="score">0</span>
-            </div>
-
-            <div>
-                <span>Tempo</span>
-                <span id="timer">00:00</span>
-            </div>
-
-            <div>
-                <span>Movimentos</span>
-                <span id="moves">0</span>
-            </div>
-
+        <section class="rules-section">
+            <h2>Objetivo</h2>
+            <p>
+                Organize todas as peças do tabuleiro em suas
+                respectivas posições utilizando uma sequência
+                de movimentos válidos.
+            </p>
         </section>
 
-    </header>
+        <section class="rules-section">
+            <h2>Tabuleiro</h2>
+            <ul>
+                <li>O tabuleiro possui tamanho <strong>N × N</strong>.</li>
+                <li>São utilizadas <strong>N² − 1</strong> peças e uma única posição vazia.</li>
+                <li>O tamanho pode variar de <strong>3 × 3</strong> até <strong>10 × 10</strong>.</li>
+            </ul>
+        </section>
 
+        <section class="rules-section">
+            <h2>Movimentação</h2>
+            <p>
+                Clique em uma peça que esteja na mesma linha ou
+                coluna do espaço vazio.
+            </p>
+            <p>
+                Todas as peças entre a peça selecionada e o espaço
+                vazio são deslocadas simultaneamente em direção ao
+                espaço vazio, preservando sua ordem.
+            </p>
+            <p>Movimentos diagonais não são permitidos.</p>
+        </section>
 
-    <section id="game-area">
+        <section class="rules-section">
+            <h2>Vitória</h2>
+            <p>
+                A partida termina quando todas as peças estiverem
+                em suas respectivas posições corretas.
+            </p>
+        </section>
 
-        <div id="game-board">
-            <!--
-                O board será preenchido/controlado
-                pelo JavaScript.
-            -->
-        </div>
+        <section class="rules-section">
+            <h2>Pontuação</h2>
+            <p>
+                A pontuação parte de uma referência de
+                <strong>1000 pontos</strong> e considera a eficiência
+                da partida.
+            </p>
+            <ul>
+                <li><strong>60%</strong> — eficiência em movimentos;</li>
+                <li><strong>40%</strong> — eficiência em tempo;</li>
+                <li>o cálculo é normalizado conforme o tamanho do tabuleiro.</li>
+            </ul>
+        </section>
 
-    </section>
+        <section class="rules-section">
+            <h2>Desistência e reinício</h2>
+            <p>
+                Você pode desistir a qualquer momento e retornar
+                ao menu. Ao reiniciar, o tabuleiro, tempo, movimentos
+                e pontuação são reiniciados.
+            </p>
+        </section>
 
-
-    <section id="game-message" aria-live="polite">
-
-        <p id="message">
-            Prepare-se para começar!
-        </p>
-
-    </section>
-
-
-    <section id="game-controls">
-
-        <button type="button" id="restart-button">
-            Reiniciar
-        </button>
-
-        <button type="button" id="back-to-menu-from-game">
+        <button type="button" id="back-to-menu-from-rules" class="button button-secondary">
             Voltar ao menu
         </button>
 
@@ -157,9 +140,68 @@
 </main>
 
 
+<!-- ========================================
+     TELA 3 — JOGO
+========================================= -->
+<main id="game-screen" class="screen">
+
+    <header class="game-header">
+
+        <div>
+            <p class="eyebrow">Partida em andamento</p>
+            <h1>Color Arrange</h1>
+            <p id="board-size-label" class="screen-subtitle">
+                Tabuleiro 3 × 3
+            </p>
+        </div>
+
+        <section id="game-status" aria-label="Status da partida">
+
+            <div class="status-item">
+                <span>Pontuação</span>
+                <strong id="score">1000</strong>
+            </div>
+
+            <div class="status-item">
+                <span>Tempo</span>
+                <strong id="timer">00:00</strong>
+            </div>
+
+            <div class="status-item">
+                <span>Movimentos</span>
+                <strong id="moves">0</strong>
+            </div>
+
+        </section>
+
+    </header>
+
+    <section id="game-area" aria-label="Área do tabuleiro">
+        <div id="game-board" role="grid" aria-label="Tabuleiro do Color Arrange"></div>
+    </section>
+
+    <section id="game-message" aria-live="polite">
+        <p id="message">Organize todas as peças!</p>
+    </section>
+
+    <section id="game-controls">
+        <button type="button" id="restart-button" class="button button-secondary">
+            Reiniciar
+        </button>
+
+        <button type="button" id="give-up-button" class="button button-danger">
+            Desistir
+        </button>
+
+        <button type="button" id="back-to-menu-from-game" class="button button-secondary">
+            Voltar ao menu
+        </button>
+    </section>
+
+</main>
+
+
 <script src="js/script.js"></script>
 
 </body>
-
 </html>
-```

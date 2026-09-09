@@ -1,33 +1,79 @@
-    /* =========================================================
-       VARIÁVEIS BASE
-       ---------------------------------------------------------
-       Estas variáveis serão utilizadas posteriormente para
-       criação dos temas visuais do jogo.
-       ========================================================= */
+/* =========================================================
+   COLOR ARRANGE — CSS
+   Estrutura modular preparada para temas futuros
+   ========================================================= */
+
+
+/* =========================================================
+   1. TOKENS / TEMA
+   ---------------------------------------------------------
+   A identidade visual fica centralizada nestas variáveis.
+   Novos temas podem sobrescrevê-las com [data-theme].
+   ========================================================= */
 
 :root {
-    --font-family: system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
+    --font-family:
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
 
-    --text-color: #222;
-    --background-color: #f5f5f5;
-    --surface-color: #ffffff;
-    --border-color: #cccccc;
+    --color-background: #f3f4f6;
+    --color-surface: #ffffff;
+    --color-text: #1f2937;
+    --color-text-muted: #6b7280;
 
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 0.75rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
 
-    --border-radius: 0.5rem;
+    --color-danger: #dc2626;
+    --color-danger-hover: #b91c1c;
+
+    --color-border: #d1d5db;
+
+    --tile-background: #ffffff;
+    --tile-background-hover: #eff6ff;
+    --tile-text: #1f2937;
+    --tile-empty: transparent;
+
+    --space-xs: 0.375rem;
+    --space-sm: 0.625rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+
+    --radius-sm: 0.375rem;
+    --radius-md: 0.625rem;
+    --radius-lg: 1rem;
+
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.08);
+    --shadow-md: 0 4px 12px rgb(0 0 0 / 0.10);
 
     --content-width: 70rem;
+    --board-max-size: 42rem;
+
+    --transition-fast: 120ms ease;
 }
 
 
 /* =========================================================
-   RESET / BASE
+   2. EXEMPLO DE TEMA FUTURO
+   ========================================================= */
+
+/*
+[data-theme="dark"] {
+    --color-background: ...;
+    --color-surface: ...;
+    --color-text: ...;
+    --color-primary: ...;
+    --tile-background: ...;
+}
+*/
+
+
+/* =========================================================
+   3. RESET / BASE
    ========================================================= */
 
 * {
@@ -37,9 +83,10 @@
 }
 
 html {
+    min-height: 100%;
     font-family: var(--font-family);
-    color: var(--text-color);
-    background-color: var(--background-color);
+    color: var(--color-text);
+    background: var(--color-background);
 }
 
 body {
@@ -47,19 +94,23 @@ body {
     line-height: 1.5;
 }
 
-
-/* =========================================================
-   ELEMENTOS GERAIS
-   ========================================================= */
+button,
+select {
+    font: inherit;
+}
 
 button {
-    font: inherit;
     cursor: pointer;
 }
 
-button:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 2px;
+button:disabled {
+    cursor: default;
+}
+
+button:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
 }
 
 h1,
@@ -68,333 +119,511 @@ h3 {
     line-height: 1.2;
 }
 
+p {
+    color: var(--color-text-muted);
+}
+
 ul {
-    padding-left: 1.5rem;
+    padding-left: 1.25rem;
 }
 
 
 /* =========================================================
-   TELAS
-   ---------------------------------------------------------
-   Cada <main> representa uma tela diferente da aplicação.
-   O JavaScript poderá controlar posteriormente qual tela
-   está visível.
+   4. SISTEMA DE TELAS
    ========================================================= */
 
-#menu-screen,
-#rules-screen,
-#game-screen {
-    width: min(100% - 2rem, var(--content-width));
+.screen {
+    display: none;
+
+    width: min(
+            calc(100% - 2rem),
+            var(--content-width)
+    );
+
     min-height: 100vh;
     margin-inline: auto;
-    padding-block: var(--spacing-xl);
+    padding-block: var(--space-xl);
+}
+
+.screen.active {
+    display: flex;
 }
 
 
 /* =========================================================
-   MENU
+   5. CABEÇALHOS
+   ========================================================= */
+
+.screen-header {
+    text-align: center;
+}
+
+.screen-header h1,
+.game-header h1 {
+    color: var(--color-text);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+}
+
+.eyebrow {
+    margin-bottom: var(--space-xs);
+
+    color: var(--color-primary);
+
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.screen-subtitle {
+    max-width: 42rem;
+    margin-top: var(--space-sm);
+    margin-inline: auto;
+}
+
+
+/* =========================================================
+   6. PAINÉIS
+   ========================================================= */
+
+.panel {
+    width: 100%;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+}
+
+
+/* =========================================================
+   7. MENU
    ========================================================= */
 
 #menu-screen {
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-xl);
+    gap: var(--space-xl);
+}
+
+.menu-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+
+    width: min(100%, 30rem);
+    padding: var(--space-xl);
+
     text-align: center;
 }
 
-#menu {
+.field-group {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-lg);
-    width: 100%;
-    max-width: 30rem;
+    gap: var(--space-sm);
+
+    text-align: left;
 }
 
-#size-selection {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-    width: 100%;
-    max-width: 20rem;
+.field-group label {
+    font-weight: 600;
 }
 
-#size-selection h3 {
-    margin-bottom: var(--spacing-xs);
-}
-
-#size-selection button,
-#rules-button {
+.field-group select {
     width: 100%;
     min-height: 3rem;
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding-inline: var(--space-md);
 
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
 
-    background-color: var(--surface-color);
-    color: var(--text-color);
+    background: var(--color-surface);
+    color: var(--color-text);
 }
 
 
 /* =========================================================
-   REGRAS
+   8. BOTÕES
+   ========================================================= */
+
+.button {
+    min-height: 2.875rem;
+    padding: var(--space-sm) var(--space-lg);
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+
+    transition:
+            background-color var(--transition-fast),
+            transform var(--transition-fast),
+            filter var(--transition-fast);
+}
+
+.button:hover {
+    filter: brightness(0.96);
+}
+
+.button:active {
+    transform: translateY(1px);
+}
+
+.button-primary {
+    background: var(--color-primary);
+    color: #ffffff;
+}
+
+.button-primary:hover {
+    background: var(--color-primary-hover);
+}
+
+.button-secondary {
+    border-color: var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text);
+}
+
+.button-danger {
+    background: var(--color-danger);
+    color: #ffffff;
+}
+
+.button-danger:hover {
+    background: var(--color-danger-hover);
+}
+
+
+/* =========================================================
+   9. REGRAS
    ========================================================= */
 
 #rules-screen {
+    flex-direction: column;
+    gap: var(--space-xl);
+}
+
+.rules-panel {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xl);
+    gap: var(--space-xl);
+
+    padding: var(--space-xl);
 }
 
-#rules-screen header {
-    text-align: center;
-}
-
-#game-objective,
-#game-rules {
-    width: 100%;
-    padding: var(--spacing-lg);
-
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-
-    background-color: var(--surface-color);
-}
-
-#game-objective h2,
-#game-rules h2 {
-    margin-bottom: var(--spacing-md);
-}
-
-#game-rules ul {
+.rules-section {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
+    gap: var(--space-sm);
 }
 
-#back-to-menu-from-rules {
+.rules-section h2 {
+    color: var(--color-text);
+}
+
+.rules-section ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.rules-section li {
+    color: var(--color-text-muted);
+}
+
+.rules-panel > .button {
     align-self: center;
-
-    min-height: 2.75rem;
-    padding: var(--spacing-sm) var(--spacing-lg);
-
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-
-    background-color: var(--surface-color);
-    color: var(--text-color);
 }
 
 
 /* =========================================================
-   TELA DO JOGO
+   10. TELA DO JOGO
    ========================================================= */
 
 #game-screen {
-    display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg);
+    gap: var(--space-lg);
 }
 
-#game-screen > header {
+.game-header {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--spacing-md);
+    gap: var(--space-lg);
 
-    padding-bottom: var(--spacing-md);
+    padding-bottom: var(--space-lg);
 
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.game-header .screen-subtitle {
+    margin-inline: 0;
 }
 
 
 /* =========================================================
-   STATUS DA PARTIDA
+   11. STATUS
    ========================================================= */
 
 #game-status {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: var(--spacing-md);
+    gap: var(--space-sm);
 }
 
-#game-status > div {
+.status-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 6rem;
+    justify-content: center;
 
-    padding: var(--spacing-sm);
+    min-width: 6.5rem;
+    padding: var(--space-sm) var(--space-md);
 
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
 
-    background-color: var(--surface-color);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
 }
 
-#game-status span:first-child {
-    font-size: 0.85rem;
+.status-item span {
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
 }
 
-#game-status span:last-child {
+.status-item strong {
+    margin-top: 0.125rem;
+    color: var(--color-text);
     font-size: 1.25rem;
-    font-weight: 600;
 }
 
 
 /* =========================================================
-   ÁREA DO JOGO
+   12. ÁREA DO TABULEIRO
    ========================================================= */
 
 #game-area {
     display: flex;
-    justify-content: center;
     align-items: center;
-
+    justify-content: center;
     width: 100%;
 }
 
 
 /* =========================================================
-   BOARD
-   ---------------------------------------------------------
-   Por enquanto o board possui apenas uma área visual.
-   O tamanho e a estrutura interna serão definidos
-   posteriormente pelo JavaScript/CSS.
+   13. TABULEIRO
    ========================================================= */
 
 #game-board {
-    width: min(80vw, 40rem);
-    aspect-ratio: 1 / 1;
+    --board-size: 3;
 
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+    display: grid;
 
-    background-color: var(--surface-color);
+    grid-template-columns:
+        repeat(var(--board-size), minmax(0, 1fr));
+
+    grid-template-rows:
+        repeat(var(--board-size), minmax(0, 1fr));
+
+    gap: clamp(0.2rem, 0.8vw, 0.5rem);
+
+    width: min(90vw, var(--board-max-size));
+    aspect-ratio: 1;
+
+    padding: clamp(0.3rem, 1vw, 0.75rem);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
 }
 
 
 /* =========================================================
-   MENSAGEM DO JOGO
+   14. PEÇAS
+   ========================================================= */
+
+.game-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    background: var(--tile-background);
+    color: var(--tile-text);
+
+    font-size: clamp(
+            0.65rem,
+            calc(5vw / var(--board-size)),
+            1.5rem
+    );
+
+    font-weight: 700;
+
+    box-shadow: var(--shadow-sm);
+
+    transition:
+            background-color var(--transition-fast),
+            transform var(--transition-fast),
+            border-color var(--transition-fast);
+}
+
+.game-cell:hover:not(:disabled) {
+    background: var(--tile-background-hover);
+    border-color: var(--color-primary);
+}
+
+.game-cell:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.game-cell.empty {
+    border-color: transparent;
+    background: var(--tile-empty);
+    box-shadow: none;
+}
+
+#game-board.solved .game-cell:not(.empty) {
+    border-color: var(--color-primary);
+}
+
+
+/* =========================================================
+   15. MENSAGEM
    ========================================================= */
 
 #game-message {
     width: 100%;
+    padding: var(--space-md);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    background: var(--color-surface);
     text-align: center;
+}
 
-    padding: var(--spacing-md);
-
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-
-    background-color: var(--surface-color);
+#game-message p {
+    color: var(--color-text);
 }
 
 
 /* =========================================================
-   CONTROLES
+   16. CONTROLES
    ========================================================= */
 
 #game-controls {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: var(--spacing-md);
-}
-
-#game-controls button {
-    min-height: 2.75rem;
-    padding: var(--spacing-sm) var(--spacing-lg);
-
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-
-    background-color: var(--surface-color);
-    color: var(--text-color);
+    gap: var(--space-sm);
 }
 
 
 /* =========================================================
-   INTERAÇÃO BÁSICA
-   ---------------------------------------------------------
-   Apenas estados funcionais. A identidade visual será
-   definida posteriormente.
+   17. RESPONSIVIDADE
    ========================================================= */
 
-button:hover {
-    filter: brightness(0.95);
-}
+@media (max-width: 48rem) {
 
-button:active {
-    transform: translateY(1px);
-}
+    .screen {
+        width: min(
+                calc(100% - 1.5rem),
+                var(--content-width)
+        );
 
-
-/* =========================================================
-   RESPONSIVIDADE
-   ---------------------------------------------------------
-   A estrutura já nasce adaptável. Estes ajustes apenas
-   refinam a disposição em telas maiores.
-   ========================================================= */
-
-@media (min-width: 48rem) {
-
-    #rules-screen {
-        padding-inline: var(--spacing-xl);
+        padding-block: var(--space-lg);
     }
 
-    #game-screen > header {
-        padding-inline: var(--spacing-md);
-    }
-
-    #game-board {
-        width: min(70vw, 45rem);
-    }
-}
-
-
-/* =========================================================
-   TELAS PEQUENAS
-   ========================================================= */
-
-@media (max-width: 30rem) {
-
-    #menu-screen,
-    #rules-screen,
-    #game-screen {
-        width: min(100% - 1rem, var(--content-width));
-        padding-block: var(--spacing-md);
-    }
-
-    #game-screen > header {
+    .game-header {
         flex-direction: column;
         align-items: stretch;
         text-align: center;
+    }
+
+    .game-header .screen-subtitle {
+        margin-inline: auto;
     }
 
     #game-status {
         width: 100%;
     }
 
-    #game-status > div {
+    .status-item {
         flex: 1;
         min-width: 0;
     }
 
     #game-board {
-        width: min(90vw, 30rem);
+        width: min(94vw, var(--board-max-size));
+    }
+}
+
+
+@media (max-width: 30rem) {
+
+    .screen {
+        width: min(
+                calc(100% - 1rem),
+                var(--content-width)
+        );
+
+        padding-block: var(--space-md);
+    }
+
+    .menu-panel,
+    .rules-panel {
+        padding: var(--space-lg);
+    }
+
+    #game-status {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .status-item {
+        width: 100%;
+        padding-inline: var(--space-xs);
+    }
+
+    .status-item span {
+        font-size: 0.7rem;
+    }
+
+    .status-item strong {
+        font-size: 1rem;
     }
 
     #game-controls {
         flex-direction: column;
     }
 
-    #game-controls button {
+    #game-controls .button {
         width: 100%;
+    }
+}
+
+
+/* =========================================================
+   18. TABULEIROS GRANDES
+   ========================================================= */
+
+@media (max-width: 48rem) {
+
+    #game-board[aria-colcount="7"],
+    #game-board[aria-colcount="8"],
+    #game-board[aria-colcount="9"],
+    #game-board[aria-colcount="10"] {
+        gap: 0.2rem;
+        padding: 0.3rem;
     }
 }
