@@ -73,7 +73,7 @@ Movimentos diagonais ou movimentos em que as peças não estejam alinhadas com o
 
 A partida é vencida quando todas as peças estiverem posicionadas em suas respectivas posições corretas.
 
-Após a vitória, a partida é encerrada e as métricas da partida podem ser apresentadas ao jogador.
+Após a vitória, a partida é encerrada e as métricas da partida são ser apresentadas ao jogador.
 
 ---
 
@@ -98,7 +98,7 @@ Ao iniciar uma nova partida:
 * a pontuação é reiniciada;
 * o estado da partida é reinicializado.
 
-O embaralhamento será realizado de maneira que o tabuleiro gerado permaneça solucionável.
+O embaralhamento é realizado de maneira que o tabuleiro gerado permaneça solucionável.
 
 ---
 
@@ -124,8 +124,6 @@ Os dois componentes serão calculados individualmente e combinados em uma pontua
 
 Dessa forma, o tamanho do tabuleiro será considerado no cálculo e tabuleiros maiores não serão penalizados injustamente em relação aos menores.
 
-A fórmula definitiva poderá ser calibrada durante a implementação e os testes do jogo.
-
 ---
 
 ## Informações da partida
@@ -138,35 +136,23 @@ Durante uma partida, a interface deverá apresentar, inicialmente:
 * **tabuleiro**;
 * controles para iniciar/reiniciar ou desistir da partida.
 
-Funcionalidades visuais adicionais poderão ser incorporadas posteriormente sem alterar a mecânica principal do jogo.
-
 ---
 
 ## Tecnologias utilizadas
 
-O projeto será desenvolvido exclusivamente utilizando tecnologias web básicas:
+O projeto foi desenvolvido exclusivamente utilizando tecnologias web básicas:
 
 * HTML5;
 * CSS3;
 * JavaScript puro.
 
-Não serão utilizados frameworks ou bibliotecas externas para a implementação da lógica principal do jogo.
-
----
-
-## Responsividade
-
-A interface será desenvolvida de maneira responsiva, permitindo que o jogo seja executado e utilizado em diferentes dispositivos e tamanhos de tela, incluindo computadores, tablets e smartphones.
-
-O tamanho do tabuleiro deverá se adaptar ao espaço disponível sem comprometer a interação com as peças.
+Não foi utilizados frameworks ou bibliotecas externas para a implementação da lógica principal do jogo.
 
 ---
 
 ## Estrutura do projeto
 
-A estrutura do projeto será organizada de forma a separar a estrutura, apresentação e lógica da aplicação.
-
-Uma estrutura inicial prevista é:
+A estrutura do projeto é organizada de forma a separar a estrutura, apresentação e lógica da aplicação.
 
 ```text
 Color_Arrange/
@@ -175,22 +161,19 @@ Color_Arrange/
 ├── css/
 │   └── style.css
 ├── js/
-│   └── script.js│
+│   └── script.js
 ├── README.md
 └── LICENSE
 ```
-
-A estrutura poderá ser modificada durante o desenvolvimento caso seja necessário separar melhor os componentes da aplicação.
-
 ---
 
 ## Publicação
 
 O jogo será publicado utilizando **GitHub Pages**, permitindo que seja executado diretamente pelo navegador.
 
-**Jogo:** [link para o GitHub Pages]
+**Jogo:** https://kenny-0h.github.io/Color_Arrange/
 
-**Repositório:** [link para o repositório]
+**Repositório:** https://github.com/Kenny-0h/Color_Arrange.git
 
 ---
 
