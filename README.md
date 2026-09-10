@@ -183,7 +183,7 @@ O jogo será publicado utilizando **GitHub Pages**, permitindo que seja executad
 {
   "nome": "Color Arrange",
   "descricao": "Jogo de lógica no qual o jogador deve organizar as peças de um tabuleiro utilizando movimentos válidos, buscando completar o desafio com o menor tempo e número de movimentos possível.",
-  "autores": "Luís Kennedy gervásio Turola",
+  "autores": "Luís Kennedy Gervásio Turola",
   "turma": "14A"
 }
 ```
