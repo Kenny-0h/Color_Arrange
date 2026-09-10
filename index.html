@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Arrange</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="theme-blue game-state-normal">
+
+<!-- ========================================
+     TELA 1 — MENU
+========================================= -->
+<main id="menu-screen" class="screen active">
+
+    <header class="screen-header">
+        <p class="eyebrow">Jogo de Lógica</p>
+        <h1>Color Arrange</h1>
+        <p class="screen-subtitle">
+            Organize todas as peças utilizando o menor número de movimentos e o menor tempo possível.
+        </p>
+    </header>
+
+    <section class="panel menu-panel" aria-labelledby="menu-title">
+
+        <h2 id="menu-title">Nova Partida</h2>
+
+        <div class="field-group">
+            <label for="board-size">Tamanho do Tabuleiro</label>
+            <div class="select-wrapper">
+                <select id="board-size" name="board-size">
+                    <option value="3">3 × 3 (Fácil)</option>
+                    <option value="4" selected>4 × 4 (Médio)</option>
+                    <option value="5">5 × 5 (Desafio)</option>
+                    <option value="6">6 × 6</option>
+                    <option value="7">7 × 7</option>
+                    <option value="8">8 × 8</option>
+                    <option value="9">9 × 9</option>
+                    <option value="10">10 × 10 (Mestre)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label for="game-theme">Tema de Cores</label>
+            <div class="select-wrapper">
+                <select id="game-theme" name="game-theme">
+                    <option value="blue" selected>Azul Oceano</option>
+                    <option value="green">Verde Sálvia</option>
+                    <option value="pink">Rosa Rosé</option>
+                    <option value="purple">Lilás Soft</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="menu-actions">
+            <button type="button" id="start-button" class="button button-primary">
+                Iniciar Partida
+            </button>
+
+            <button type="button" id="rules-button" class="button button-secondary">
+                Regras do Jogo
+            </button>
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ========================================
+     TELA 2 — REGRAS
+========================================= -->
+<main id="rules-screen" class="screen">
+
+    <header class="screen-header">
+        <p class="eyebrow">Instruções</p>
+        <h1>Como Jogar</h1>
+    </header>
+
+    <section class="panel rules-panel">
+
+        <section class="rules-section">
+            <h2>Objetivo</h2>
+            <p>
+                Organize todas as peças do tabuleiro em ordem numérica crescente, deixando o espaço vazio na última posição.
+            </p>
+        </section>
+
+        <section class="rules-section">
+            <h2>Tabuleiro</h2>
+            <ul>
+                <li>O tabuleiro possui tamanho <strong>N × N</strong>.</li>
+                <li>São utilizadas <strong>N² − 1</strong> peças e uma única posição vazia.</li>
+                <li>O tamanho pode variar de <strong>3 × 3</strong> até <strong>10 × 10</strong>.</li>
+            </ul>
+        </section>
+
+        <section class="rules-section">
+            <h2>Movimentação</h2>
+            <p>
+                Clique em uma peça que esteja na mesma linha ou coluna do espaço vazio.
+            </p>
+            <p>
+                Todas as peças entre a peça selecionada e o espaço vazio deslizam simultaneamente em direção ao espaço vazio, preservando sua ordem.
+            </p>
+            <p>Movimentos diagonais não são permitidos.</p>
+        </section>
+
+        <section class="rules-section">
+            <h2>Pontuação</h2>
+            <p>
+                A pontuação máxima é de <strong>1000 pontos</strong> e avalia a eficiência da partida:
+            </p>
+            <ul>
+                <li><strong>60%</strong> — eficiência em movimentos;</li>
+                <li><strong>40%</strong> — eficiência em tempo.</li>
+            </ul>
+        </section>
+
+        <button type="button" id="back-to-menu-from-rules" class="button button-secondary">
+            Voltar ao Menu
+        </button>
+
+    </section>
+
+</main>
+
+
+<!-- ========================================
+     TELA 3 — JOGO
+========================================= -->
+<main id="game-screen" class="screen">
+
+    <header class="game-header">
+
+        <div class="game-header-info">
+            <p class="eyebrow">Partida em Andamento</p>
+            <h1>Color Arrange</h1>
+            <p id="board-size-label" class="screen-subtitle">
+                Tabuleiro 4 × 4
+            </p>
+        </div>
+
+        <section id="game-status" aria-label="Status da partida">
+
+            <div class="status-item">
+                <span>Pontuação</span>
+                <strong id="score">1000</strong>
+            </div>
+
+            <div class="status-item">
+                <span>Tempo</span>
+                <strong id="timer">00:00</strong>
+            </div>
+
+            <div class="status-item">
+                <span>Movimentos</span>
+                <strong id="moves">0</strong>
+            </div>
+
+        </section>
+
+    </header>
+
+    <section id="game-area" aria-label="Área do tabuleiro">
+        <div id="game-board" role="grid" aria-label="Tabuleiro do Color Arrange"></div>
+    </section>
+
+    <section id="game-message" aria-live="polite">
+        <p id="message">Organize todas as peças para vencer!</p>
+    </section>
+
+    <section id="game-controls">
+        <button type="button" id="restart-button" class="button button-secondary">
+            Reiniciar
+        </button>
+
+        <button type="button" id="give-up-button" class="button button-danger">
+            Desistir
+        </button>
+
+        <button type="button" id="back-to-menu-from-game" class="button button-secondary">
+            Voltar ao Menu
+        </button>
+    </section>
+
+</main>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
