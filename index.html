@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body class="theme-blue game-state-normal">
 
 <!-- ========================================
      TELA 1 — MENU
@@ -16,51 +16,54 @@
 <main id="menu-screen" class="screen active">
 
     <header class="screen-header">
-        <p class="eyebrow">Jogo de lógica</p>
+        <p class="eyebrow">Jogo de Lógica</p>
         <h1>Color Arrange</h1>
         <p class="screen-subtitle">
-            Organize todas as peças utilizando o menor
-            número de movimentos e o menor tempo possível.
+            Organize todas as peças utilizando o menor número de movimentos e o menor tempo possível.
         </p>
     </header>
 
     <section class="panel menu-panel" aria-labelledby="menu-title">
 
-        <h2 id="menu-title">Nova partida</h2>
+        <h2 id="menu-title">Nova Partida</h2>
 
         <div class="field-group">
-            <label for="board-size">Tamanho do tabuleiro</label>
-
-            <select id="board-size" name="board-size">
-                <option value="3">3 × 3</option>
-                <option value="4">4 × 4</option>
-                <option value="5">5 × 5</option>
-                <option value="6">6 × 6</option>
-                <option value="7">7 × 7</option>
-                <option value="8">8 × 8</option>
-                <option value="9">9 × 9</option>
-                <option value="10">10 × 10</option>
-            </select>
+            <label for="board-size">Tamanho do Tabuleiro</label>
+            <div class="select-wrapper">
+                <select id="board-size" name="board-size">
+                    <option value="3">3 × 3 (Fácil)</option>
+                    <option value="4" selected>4 × 4 (Médio)</option>
+                    <option value="5">5 × 5 (Desafio)</option>
+                    <option value="6">6 × 6</option>
+                    <option value="7">7 × 7</option>
+                    <option value="8">8 × 8</option>
+                    <option value="9">9 × 9</option>
+                    <option value="10">10 × 10 (Mestre)</option>
+                </select>
+            </div>
         </div>
 
         <div class="field-group">
-            <label for="game-theme">Tema</label>
-
-            <select id="game-theme" name="game-theme">
-                <option value="default">Tema padrão</option>
-                <option value="1">Tema 1</option>
-                <option value="2">Tema 2</option>
-                <option value="3">Tema 3</option>
-            </select>
+            <label for="game-theme">Tema de Cores</label>
+            <div class="select-wrapper">
+                <select id="game-theme" name="game-theme">
+                    <option value="blue" selected>Azul Oceano</option>
+                    <option value="green">Verde Sálvia</option>
+                    <option value="pink">Rosa Rosé</option>
+                    <option value="purple">Lilás Soft</option>
+                </select>
+            </div>
         </div>
 
-        <button type="button" id="start-button" class="button button-primary">
-            Iniciar partida
-        </button>
+        <div class="menu-actions">
+            <button type="button" id="start-button" class="button button-primary">
+                Iniciar Partida
+            </button>
 
-        <button type="button" id="rules-button" class="button button-secondary">
-            Regras
-        </button>
+            <button type="button" id="rules-button" class="button button-secondary">
+                Regras do Jogo
+            </button>
+        </div>
 
     </section>
 
@@ -73,8 +76,8 @@
 <main id="rules-screen" class="screen">
 
     <header class="screen-header">
-        <p class="eyebrow">Como jogar</p>
-        <h1>Regras</h1>
+        <p class="eyebrow">Instruções</p>
+        <h1>Como Jogar</h1>
     </header>
 
     <section class="panel rules-panel">
@@ -82,9 +85,7 @@
         <section class="rules-section">
             <h2>Objetivo</h2>
             <p>
-                Organize todas as peças do tabuleiro em suas
-                respectivas posições utilizando uma sequência
-                de movimentos válidos.
+                Organize todas as peças do tabuleiro em ordem numérica crescente, deixando o espaço vazio na última posição.
             </p>
         </section>
 
@@ -100,50 +101,27 @@
         <section class="rules-section">
             <h2>Movimentação</h2>
             <p>
-                Clique em uma peça que esteja na mesma linha ou
-                coluna do espaço vazio.
+                Clique em uma peça que esteja na mesma linha ou coluna do espaço vazio.
             </p>
             <p>
-                Todas as peças entre a peça selecionada e o espaço
-                vazio são deslocadas simultaneamente em direção ao
-                espaço vazio, preservando sua ordem.
+                Todas as peças entre a peça selecionada e o espaço vazio deslizam simultaneamente em direção ao espaço vazio, preservando sua ordem.
             </p>
             <p>Movimentos diagonais não são permitidos.</p>
         </section>
 
         <section class="rules-section">
-            <h2>Vitória</h2>
-            <p>
-                A partida termina quando todas as peças estiverem
-                em suas respectivas posições corretas.
-            </p>
-        </section>
-
-        <section class="rules-section">
             <h2>Pontuação</h2>
             <p>
-                A pontuação parte de uma referência de
-                <strong>1000 pontos</strong> e considera a eficiência
-                da partida.
+                A pontuação máxima é de <strong>1000 pontos</strong> e avalia a eficiência da partida:
             </p>
             <ul>
                 <li><strong>60%</strong> — eficiência em movimentos;</li>
-                <li><strong>40%</strong> — eficiência em tempo;</li>
-                <li>o cálculo é normalizado conforme o tamanho do tabuleiro.</li>
+                <li><strong>40%</strong> — eficiência em tempo.</li>
             </ul>
         </section>
 
-        <section class="rules-section">
-            <h2>Desistência e reinício</h2>
-            <p>
-                Você pode desistir a qualquer momento e retornar
-                ao menu. Ao reiniciar, o tabuleiro, tempo, movimentos
-                e pontuação são reiniciados.
-            </p>
-        </section>
-
         <button type="button" id="back-to-menu-from-rules" class="button button-secondary">
-            Voltar ao menu
+            Voltar ao Menu
         </button>
 
     </section>
@@ -158,11 +136,11 @@
 
     <header class="game-header">
 
-        <div>
-            <p class="eyebrow">Partida em andamento</p>
+        <div class="game-header-info">
+            <p class="eyebrow">Partida em Andamento</p>
             <h1>Color Arrange</h1>
             <p id="board-size-label" class="screen-subtitle">
-                Tabuleiro 3 × 3
+                Tabuleiro 4 × 4
             </p>
         </div>
 
@@ -192,7 +170,7 @@
     </section>
 
     <section id="game-message" aria-live="polite">
-        <p id="message">Organize todas as peças!</p>
+        <p id="message">Organize todas as peças para vencer!</p>
     </section>
 
     <section id="game-controls">
@@ -205,12 +183,11 @@
         </button>
 
         <button type="button" id="back-to-menu-from-game" class="button button-secondary">
-            Voltar ao menu
+            Voltar ao Menu
         </button>
     </section>
 
 </main>
-
 
 <script src="js/script.js"></script>
 

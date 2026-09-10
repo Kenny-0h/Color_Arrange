@@ -1,6 +1,6 @@
 const MIN_BOARD_SIZE = 3;
 const MAX_BOARD_SIZE = 10;
-const DEFAULT_BOARD_SIZE = 3;
+const DEFAULT_BOARD_SIZE = 4;
 
 const EMPTY = 0;
 const MAX_SCORE = 1000;
@@ -26,6 +26,7 @@ const screens = {
 };
 
 const boardSizeSelect = document.getElementById("board-size");
+const gameThemeSelect = document.getElementById("game-theme");
 const startButton = document.getElementById("start-button");
 const rulesButton = document.getElementById("rules-button");
 const backToMenuFromRules = document.getElementById("back-to-menu-from-rules");
@@ -39,6 +40,35 @@ const messageElement = document.getElementById("message");
 const restartButton = document.getElementById("restart-button");
 const giveUpButton = document.getElementById("give-up-button");
 const backToMenuFromGame = document.getElementById("back-to-menu-from-game");
+
+
+/* =========================================================
+   SISTEMA DE TEMAS E ESTADOS VISUAIS
+   ========================================================= */
+
+function applyTheme() {
+    if (!gameThemeSelect) return;
+    const selectedTheme = gameThemeSelect.value;
+
+    document.body.classList.remove(
+        "theme-blue",
+        "theme-green",
+        "theme-pink",
+        "theme-purple"
+    );
+
+    document.body.classList.add(`theme-${selectedTheme}`);
+}
+
+function setGameState(state) {
+    document.body.classList.remove(
+        "game-state-normal",
+        "game-state-win",
+        "game-state-give-up"
+    );
+
+    document.body.classList.add(`game-state-${state}`);
+}
 
 
 /* =========================================================
@@ -69,6 +99,7 @@ function startGame() {
         return;
     }
 
+    applyTheme();
     stopTimer();
 
     gameState.status = "playing";
@@ -81,16 +112,13 @@ function startGame() {
 
     shuffleBoard();
 
-    boardSizeLabel.textContent = `${selectedSize} × ${selectedSize}`;
-
-    messageElement.textContent =
-        "Organize as peças para vencer.";
+    boardSizeLabel.textContent = `Tabuleiro ${selectedSize} × ${selectedSize}`;
+    messageElement.textContent = "Organize as peças para vencer.";
 
     updateGameInfo();
     renderBoard();
 
     boardElement.classList.remove("solved");
-
     showScreen("game");
 
     setGameState("normal");
@@ -99,7 +127,7 @@ function startGame() {
 
 
 /* =========================================================
-   CRIAÇÃO DO TABULEIRO
+   CRIAÇÃO E EMBARALHAMENTO DO TABULEIRO
    ========================================================= */
 
 function createSolvedBoard(size) {
@@ -111,19 +139,11 @@ function createSolvedBoard(size) {
     }
 
     board.push(EMPTY);
-
     return board;
 }
 
-
-/* =========================================================
-   EMBARALHAMENTO
-   ========================================================= */
-
 function shuffleBoard() {
-    const shuffleMoves =
-        Math.max(30, gameState.size * gameState.size * 15);
-
+    const shuffleMoves = Math.max(30, gameState.size * gameState.size * 15);
     let previousEmptyPosition = -1;
 
     for (let i = 0; i < shuffleMoves; i++) {
@@ -133,23 +153,14 @@ function shuffleBoard() {
             position => position !== previousEmptyPosition
         );
 
-        const candidates =
-            filteredMoves.length > 0
-                ? filteredMoves
-                : possibleMoves;
+        const candidates = filteredMoves.length > 0 ? filteredMoves : possibleMoves;
 
-        const selectedPosition =
-            candidates[
-                Math.floor(Math.random() * candidates.length)
-                ];
+        const selectedPosition = candidates[Math.floor(Math.random() * candidates.length)];
 
-        previousEmptyPosition =
-            gameState.board.indexOf(EMPTY);
-
+        previousEmptyPosition = gameState.board.indexOf(EMPTY);
         executeMove(selectedPosition, false);
     }
 
-    // Garante que o jogo não comece já resolvido.
     if (isBoardSolved()) {
         shuffleBoard();
     }
@@ -157,7 +168,7 @@ function shuffleBoard() {
 
 
 /* =========================================================
-   MOVIMENTOS POSSÍVEIS
+   LÓGICA DE MOVIMENTO
    ========================================================= */
 
 function getPossibleMoves() {
@@ -169,224 +180,66 @@ function getPossibleMoves() {
 
     const possibleMoves = [];
 
-    // Peças da mesma linha
     for (let column = 0; column < size; column++) {
         const position = emptyRow * size + column;
-
-        if (position !== emptyPosition) {
-            possibleMoves.push(position);
-        }
+        if (position !== emptyPosition) possibleMoves.push(position);
     }
 
-    // Peças da mesma coluna
     for (let row = 0; row < size; row++) {
         const position = row * size + emptyColumn;
-
-        if (position !== emptyPosition) {
-            possibleMoves.push(position);
-        }
+        if (position !== emptyPosition) possibleMoves.push(position);
     }
 
     return possibleMoves;
 }
 
-
-/* =========================================================
-   RENDERIZAÇÃO DO TABULEIRO
-   ========================================================= */
-
-function renderBoard() {
-    const size = gameState.size;
-
-    boardElement.innerHTML = "";
-
-    boardElement.style.setProperty(
-        "--board-size",
-        size
-    );
-
-    gameState.board.forEach((value, position) => {
-        const button = document.createElement("button");
-
-        button.type = "button";
-        button.className = "piece";
-
-        button.dataset.position = position;
-
-        button.setAttribute(
-            "aria-label",
-            value === EMPTY
-                ? "Espaço vazio"
-                : `Peça ${value}`
-        );
-
-        if (value === EMPTY) {
-            button.classList.add("piece--empty");
-            button.disabled = true;
-        } else {
-            button.textContent = value;
-
-            button.addEventListener(
-                "click",
-                () => handleCellClick(position)
-            );
-        }
-
-        boardElement.appendChild(button);
-    });
-}
-
-
-/* =========================================================
-   CLIQUE EM UMA PEÇA
-   ========================================================= */
-
-function handleCellClick(position) {
-    if (gameState.status !== "playing") {
-        return;
-    }
-
-    if (!isValidMove(position)) {
-        messageElement.textContent =
-            "Movimento inválido: escolha uma peça da mesma linha ou coluna do espaço vazio.";
-
-        return;
-    }
-
-    executeMove(position, true);
-
-    renderBoard();
-    updateGameInfo();
-
-    if (isBoardSolved()) {
-        finishGame();
-    } else {
-        messageElement.textContent =
-            "Continue organizando as peças.";
-    }
-}
-
-
-/* =========================================================
-   VALIDAÇÃO DO MOVIMENTO
-   ========================================================= */
-
 function isValidMove(position) {
     const size = gameState.size;
-
-    const emptyPosition =
-        gameState.board.indexOf(EMPTY);
+    const emptyPosition = gameState.board.indexOf(EMPTY);
 
     const row = Math.floor(position / size);
     const column = position % size;
 
-    const emptyRow =
-        Math.floor(emptyPosition / size);
+    const emptyRow = Math.floor(emptyPosition / size);
+    const emptyColumn = emptyPosition % size;
 
-    const emptyColumn =
-        emptyPosition % size;
-
-    return (
-        row === emptyRow ||
-        column === emptyColumn
-    );
+    return row === emptyRow || column === emptyColumn;
 }
-
-
-/* =========================================================
-   EXECUÇÃO DO MOVIMENTO
-   ========================================================= */
 
 function executeMove(position, countMove = true) {
     const size = gameState.size;
-
-    const emptyPosition =
-        gameState.board.indexOf(EMPTY);
+    const emptyPosition = gameState.board.indexOf(EMPTY);
 
     const row = Math.floor(position / size);
     const column = position % size;
 
-    const emptyRow =
-        Math.floor(emptyPosition / size);
-
-    const emptyColumn =
-        emptyPosition % size;
-
-
-    /*
-     * MOVIMENTO HORIZONTAL
-     */
+    const emptyRow = Math.floor(emptyPosition / size);
+    const emptyColumn = emptyPosition % size;
 
     if (row === emptyRow) {
-
-        // Peça está à esquerda do espaço vazio
         if (column < emptyColumn) {
-
-            for (
-                let current = emptyPosition;
-                current > position;
-                current--
-            ) {
-                gameState.board[current] =
-                    gameState.board[current - 1];
+            for (let current = emptyPosition; current > position; current--) {
+                gameState.board[current] = gameState.board[current - 1];
             }
-
-        }
-
-        // Peça está à direita do espaço vazio
-        else if (column > emptyColumn) {
-
-            for (
-                let current = emptyPosition;
-                current < position;
-                current++
-            ) {
-                gameState.board[current] =
-                    gameState.board[current + 1];
+        } else if (column > emptyColumn) {
+            for (let current = emptyPosition; current < position; current++) {
+                gameState.board[current] = gameState.board[current + 1];
             }
         }
-    }
-
-
-    /*
-     * MOVIMENTO VERTICAL
-     */
-
-    else if (column === emptyColumn) {
-
-        // Peça está acima do espaço vazio
+    } else if (column === emptyColumn) {
         if (row < emptyRow) {
-
-            for (
-                let current = emptyPosition;
-                current > position;
-                current -= size
-            ) {
-                gameState.board[current] =
-                    gameState.board[current - size];
+            for (let current = emptyPosition; current > position; current -= size) {
+                gameState.board[current] = gameState.board[current - size];
             }
-
-        }
-
-        // Peça está abaixo do espaço vazio
-        else if (row > emptyRow) {
-
-            for (
-                let current = emptyPosition;
-                current < position;
-                current += size
-            ) {
-                gameState.board[current] =
-                    gameState.board[current + size];
+        } else if (row > emptyRow) {
+            for (let current = emptyPosition; current < position; current += size) {
+                gameState.board[current] = gameState.board[current + size];
             }
         }
-
     } else {
         return false;
     }
 
-
-    // A posição escolhida passa a ser o espaço vazio.
     gameState.board[position] = EMPTY;
 
     if (countMove) {
@@ -398,146 +251,148 @@ function executeMove(position, countMove = true) {
 
 
 /* =========================================================
-   VERIFICAÇÃO DE VITÓRIA
+   RENDERIZAÇÃO DO TABULEIRO
    ========================================================= */
 
-function isBoardSolved() {
-    const totalCells =
-        gameState.size * gameState.size;
+function renderBoard() {
+    const size = gameState.size;
 
-    for (
-        let position = 0;
-        position < totalCells - 1;
-        position++
-    ) {
-        if (
-            gameState.board[position] !==
-            position + 1
-        ) {
+    boardElement.innerHTML = "";
+    boardElement.style.setProperty("--board-size", size);
+
+    gameState.board.forEach((value, position) => {
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = "piece";
+        button.dataset.position = position;
+
+        button.setAttribute(
+            "aria-label",
+            value === EMPTY ? "Espaço vazio" : `Peça ${value}`
+        );
+
+        if (value === EMPTY) {
+            button.classList.add("piece--empty");
+            button.disabled = true;
+        } else {
+            button.textContent = value;
+
+            if (value === position + 1) {
+                button.classList.add("piece--correct");
+            }
+
+            button.addEventListener("click", () => handleCellClick(position));
+        }
+
+        boardElement.appendChild(button);
+    });
+}
+
+
+/* =========================================================
+   CLIQUE NA PEÇA E VITÓRIA
+   ========================================================= */
+
+function handleCellClick(position) {
+    if (gameState.status !== "playing") return;
+
+    if (!isValidMove(position)) {
+        messageElement.textContent = "Escolha uma peça da mesma linha ou coluna do espaço vazio.";
+        return;
+    }
+
+    executeMove(position, true);
+
+    renderBoard();
+    updateGameInfo();
+
+    if (isBoardSolved()) {
+        finishGame();
+    } else {
+        messageElement.textContent = "Continue organizando as peças!";
+    }
+}
+
+function isBoardSolved() {
+    const totalCells = gameState.size * gameState.size;
+
+    for (let position = 0; position < totalCells - 1; position++) {
+        if (gameState.board[position] !== position + 1) {
             return false;
         }
     }
 
-    return (
-        gameState.board[totalCells - 1] === EMPTY
-    );
+    return gameState.board[totalCells - 1] === EMPTY;
 }
 
 
 /* =========================================================
-   SISTEMA DE PONTUAÇÃO
+   PONTUAÇÃO E FINALIZAÇÃO
    ========================================================= */
 
 function calculateScore() {
     const size = gameState.size;
-
-    /*
-     * Referências normalizadas pelo tamanho do tabuleiro.
-     */
     const referenceMoves = size * size;
     const referenceTime = size * size * 10;
 
-    const extraMoves = Math.max(
-        0,
-        gameState.moves - referenceMoves
-    );
+    const extraMoves = Math.max(0, gameState.moves - referenceMoves);
+    const extraTime = Math.max(0, gameState.elapsedTime - referenceTime);
 
-    const extraTime = Math.max(
-        0,
-        gameState.elapsedTime - referenceTime
-    );
+    const movementRange = referenceMoves * 4;
+    const timeRange = referenceTime * 4;
 
-    const movementRange =
-        referenceMoves * 4;
+    const movementEfficiency = Math.max(0, 1 - extraMoves / movementRange);
+    const timeEfficiency = Math.max(0, 1 - extraTime / timeRange);
 
-    const timeRange =
-        referenceTime * 4;
+    const efficiency = movementEfficiency * MOVE_WEIGHT + timeEfficiency * TIME_WEIGHT;
 
-
-    /*
-     * Eficiência de movimentos:
-     * 60% da pontuação.
-     */
-    const movementEfficiency = Math.max(
-        0,
-        1 - extraMoves / movementRange
-    );
-
-
-    /*
-     * Eficiência de tempo:
-     * 40% da pontuação.
-     */
-    const timeEfficiency = Math.max(
-        0,
-        1 - extraTime / timeRange
-    );
-
-
-    /*
-     * Combinação final:
-     *
-     * 60% movimentos
-     * 40% tempo
-     */
-    const efficiency =
-        movementEfficiency * MOVE_WEIGHT +
-        timeEfficiency * TIME_WEIGHT;
-
-
-    return Math.max(
-        1,
-        Math.min(
-            MAX_SCORE,
-            Math.round(MAX_SCORE * efficiency)
-        )
-    );
+    return Math.max(1, Math.min(MAX_SCORE, Math.round(MAX_SCORE * efficiency)));
 }
 
-
-/* =========================================================
-   FINALIZAÇÃO DO JOGO
-   ========================================================= */
-
 function finishGame() {
-    gameState.elapsedTime =
-        getElapsedTime();
-
-    gameState.score =
-        calculateScore();
-
+    gameState.elapsedTime = getElapsedTime();
+    gameState.score = calculateScore();
     gameState.status = "won";
 
     stopTimer();
-
     renderBoard();
     updateGameInfo();
 
     boardElement.classList.add("solved");
 
     messageElement.textContent =
-        `Parabéns! Você venceu em ` +
-        `${gameState.moves} movimentos e ` +
-        `${formatTime(gameState.elapsedTime)}. ` +
-        `Pontuação final: ${gameState.score}.`;
+        `Parabéns! Você venceu em ${gameState.moves} movimentos e ` +
+        `${formatTime(gameState.elapsedTime)}. Pontuação: ${gameState.score} pts!`;
 
     setGameState("win");
 }
 
 
 /* =========================================================
-   ATUALIZAÇÃO DAS INFORMAÇÕES
+   DESISTÊNCIA E RETORNO
    ========================================================= */
 
-function updateGameInfo() {
-    scoreElement.textContent =
-        gameState.score;
+function handleGiveUp() {
+    if (gameState.status === "playing") {
+        gameState.status = "give-up";
+        stopTimer();
+        setGameState("give-up");
+        messageElement.textContent = "Você desistiu da partida. Clique em Reiniciar para tentar novamente ou Voltar ao Menu.";
+    } else {
+        returnToMenu();
+    }
+}
 
-    timerElement.textContent =
-        formatTime(gameState.elapsedTime);
+function returnToMenu() {
+    stopTimer();
+    gameState.status = "menu";
+    gameState.startTime = null;
+    gameState.elapsedTime = 0;
 
-    movesElement.textContent =
-        gameState.moves;
+    setGameState("normal");
+    boardElement.classList.remove("solved");
+    showScreen("menu");
 }
 
 
@@ -545,154 +400,55 @@ function updateGameInfo() {
    CRONÔMETRO
    ========================================================= */
 
+function updateGameInfo() {
+    scoreElement.textContent = gameState.score;
+    timerElement.textContent = formatTime(gameState.elapsedTime);
+    movesElement.textContent = gameState.moves;
+}
+
 function startTimer() {
     stopTimer();
-
     gameState.timer = setInterval(() => {
-
-        if (gameState.status !== "playing") {
-            return;
-        }
-
-        gameState.elapsedTime =
-            getElapsedTime();
-
-        timerElement.textContent =
-            formatTime(gameState.elapsedTime);
-
+        if (gameState.status !== "playing") return;
+        gameState.elapsedTime = getElapsedTime();
+        timerElement.textContent = formatTime(gameState.elapsedTime);
     }, 1000);
 }
 
-
 function stopTimer() {
     if (gameState.timer !== null) {
-
         clearInterval(gameState.timer);
-
         gameState.timer = null;
     }
 }
 
-
 function getElapsedTime() {
-    if (gameState.startTime === null) {
-        return 0;
-    }
-
-    return Math.floor(
-        (Date.now() - gameState.startTime) / 1000
-    );
+    if (gameState.startTime === null) return 0;
+    return Math.floor((Date.now() - gameState.startTime) / 1000);
 }
-
 
 function formatTime(totalSeconds) {
-    const minutes =
-        Math.floor(totalSeconds / 60);
-
-    const seconds =
-        totalSeconds % 60;
-
-    return (
-        `${String(minutes).padStart(2, "0")}:` +
-        `${String(seconds).padStart(2, "0")}`
-    );
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
 
 /* =========================================================
-   VOLTAR AO MENU
+   EVENTOS
    ========================================================= */
 
-function returnToMenu() {
-    stopTimer();
+gameThemeSelect.addEventListener("change", applyTheme);
+startButton.addEventListener("click", startGame);
 
-    gameState.status = "menu";
-    gameState.startTime = null;
-    gameState.elapsedTime = 0;
+rulesButton.addEventListener("click", () => showScreen("rules"));
+backToMenuFromRules.addEventListener("click", () => showScreen("menu"));
 
-    boardElement.classList.remove("solved");
+restartButton.addEventListener("click", startGame);
+giveUpButton.addEventListener("click", handleGiveUp);
+backToMenuFromGame.addEventListener("click", returnToMenu);
 
-    showScreen("menu");
-}
-
-
-/* =========================================================
-   EVENTOS DOS BOTÕES
-   ========================================================= */
-
-startButton.addEventListener(
-    "click",
-    startGame
-);
-
-
-rulesButton.addEventListener(
-    "click",
-    () => {
-        showScreen("rules");
-    }
-);
-
-
-backToMenuFromRules.addEventListener(
-    "click",
-    () => {
-        showScreen("menu");
-    }
-);
-
-
-restartButton.addEventListener(
-    "click",
-    startGame
-);
-
-
-giveUpButton.addEventListener(
-    "click",
-    returnToMenu
-);
-
-
-backToMenuFromGame.addEventListener(
-    "click",
-    returnToMenu
-);
-
-/* =========================================================
-   APLICAÇÃO DOS TEMAS
-   ========================================================= */
-function applyTheme() {
-    const selectedTheme = gameThemeSelect.value;
-
-    document.body.classList.remove(
-        "theme-default",
-        "theme-1",
-        "theme-2",
-        "theme-3"
-    );
-
-    document.body.classList.add(`theme-${selectedTheme}`);
-}
-
-
-/* =========================================================
-   MUDAR ESTADOS DO JOGO
-   ========================================================= */
-
-function setGameState(state) {
-    document.body.classList.remove(
-        "game-state-normal",
-        "game-state-win",
-        "game-state-give-up"
-    );
-
-    document.body.classList.add(`game-state-${state}`);
-}
-
-
-/* =========================================================
-   ESTADO INICIAL
-   ========================================================= */
-
+// Estado inicial
+applyTheme();
+setGameState("normal");
 showScreen("menu");
