@@ -21,7 +21,7 @@ O jogo utiliza um tabuleiro quadrado de tamanho `N × N`, contendo:
 
 Inicialmente, as peças são embaralhadas e distribuídas pelo tabuleiro.
 
-O jogo será desenvolvido inicialmente utilizando um tabuleiro `3 × 3`, mas sua estrutura será genérica para permitir posteriormente tabuleiros maiores, como `4 × 4`, `5 × 5` e até `10 × 10`.
+O jogo foi desenvolvido para diversos tabuleiros, desde um tabuleiro `3 × 3` até tabuleiros maiores, como `4 × 4`, `5 × 5` e até `10 × 10`.
 
 ### Movimentação
 
@@ -183,7 +183,7 @@ O jogo será publicado utilizando **GitHub Pages**, permitindo que seja executad
 {
   "nome": "Color Arrange",
   "descricao": "Jogo de lógica no qual o jogador deve organizar as peças de um tabuleiro utilizando movimentos válidos, buscando completar o desafio com o menor tempo e número de movimentos possível.",
-  "autores": "Nome do estudante",
+  "autores": "Luís Kennedy gervásio Turola",
   "turma": "14A"
 }
 ```
